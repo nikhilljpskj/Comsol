@@ -8,8 +8,8 @@ const NavbarLeft = () => {
       <ul>
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/login">Login</Link></li>
-        <li><Link to="/register">Register</Link></li>
-        <li><Link to="/complaint-reg">Complaint Reg</Link></li>
+        <li><Link to="/add-employee">Register Employee</Link></li>
+        <li><Link to="/complaint-reg">Complaint Registration</Link></li>
         <li><Link to="/views-complaints">View Complaint</Link></li>
       </ul>
     </div>
