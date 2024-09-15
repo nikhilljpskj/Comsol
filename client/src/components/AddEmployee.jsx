@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import PopUpModal from "./PopUpModal";
 import {
   Container,
   TextField,
@@ -14,6 +15,13 @@ import {
 } from "@mui/material";
 
 function Registration() {
+
+  const [open, setOpen] = useState(false);
+  const [popUpContent, setPopupContent] = useState({title:"", message : "", option: ""});
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -37,9 +45,11 @@ function Registration() {
         "http://localhost:5000/api/auth/register",
         formData
       );
-      console.log(response.data);
+      handleOpen();
+      setPopupContent({title:"Success", message : `${formData.firstName} ${formData.lastName} was added successfully`, option: "Ok"} );
     } catch (error) {
-      console.error(error);
+      handleOpen();
+      setPopupContent({title:"Something went wrong", message : "Couldn\'t create the user", option: "Try again"});
     }
   };
 
@@ -182,6 +192,13 @@ function Registration() {
           </Button>
         </form>
       </Box>
+      <PopUpModal
+      open={open}
+      onClose={handleClose}
+      title={popUpContent.title}
+      message={popUpContent.message}
+      option={popUpContent.option}
+      />
     </Container>
   );
 }

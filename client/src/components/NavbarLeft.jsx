@@ -1,26 +1,31 @@
 import {React, useState, useEffect} from 'react';
 import '../styles/NavbarLeft.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const NavbarLeft = () => {
   
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Parse the user object from localStorage
     }
+    else{
+      navigate('/login');
+    }
   }, []);
 
-  function isAdmin(){
-    return user.user_type === "Admin"? true : false 
+  function isAdmin() {
+    return user && user.user_type === "Admin";
   }
-  function isManager(){
-    return user.user_type === "Manager"? true : false 
+
+  function isManager() {
+    return user && user.user_type === "Manager";
   }
-  function isStaff(){
-    return user.user_type === "Staff"? true : false 
+  function isStaff() {
+    return user && user.user_type === "Staff";
   }
   
 
