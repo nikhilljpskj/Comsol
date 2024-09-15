@@ -27,6 +27,8 @@ const NavbarLeft = () => {
   function isStaff() {
     return user && user.user_type === "Staff";
   }
+
+  const viewComplaintsLink = isStaff ? '/views-complaints-staff' : '/views-complaints';
   
 
   return (
@@ -39,7 +41,7 @@ const NavbarLeft = () => {
           <li><Link to="/add-employee">Register Employee</Link></li>
         )}
         <li><Link to="/complaint-reg">Complaint Registration</Link></li>
-        <li><Link to="/views-complaints">View Complaint</Link></li>
+        <li><Link to={viewComplaintsLink}>View Complaint</Link></li>
       </ul>
     </div>
   );
