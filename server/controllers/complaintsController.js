@@ -55,7 +55,7 @@ exports.getAssignedComplaints = (req, res) => {
 // Fetch assigned complaints count [staff]
 exports.getAssignedComplaintsCount = (req, res) => {
   const {assignedStaffID} = req.params;
-  const sql = 'SELECT COUNT(id) as no-complaints FROM complaints where staff_assigned=?';
+  const sql = 'SELECT COUNT(id) as complaint_count FROM complaints where staff_assigned=?';
   db.query(sql, [assignedStaffID], (err, results) => {
     if (err) return res.status(500).send(err);
     res.status(200).json(results);
@@ -149,5 +149,35 @@ exports.assignStaffToComplaint = (req, res) => {
           res.status(500).send({ message: 'Employee assigned successfully, but failed to send WhatsApp message.' });
         });
     });
+  });
+};
+
+
+// Fetch number of complaints over time
+exports.getComplaintsOverTime = (req, res) => {
+  const sql = `
+    SELECT DATE(created_at) AS date, COUNT(id) AS count
+    FROM complaints
+    GROUP BY DATE(created_at)
+    ORDER BY DATE(created_at);
+  `;
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.status(200).json(results);
+  });
+};
+
+// Fetch number of completed complaints over time
+exports.getCompletedComplaintsOverTime = (req, res) => {
+  const sql = `
+    SELECT DATE(created_at) AS date, COUNT(id) AS count
+    FROM complaints
+    WHERE status = '2'
+    GROUP BY DATE(created_at)
+    ORDER BY DATE(created_at);
+  `;
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.status(200).json(results);
   });
 };

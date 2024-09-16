@@ -15,4 +15,9 @@ router.get('/:assignedStaffID/assigned', complaintsController.getAssignedComplai
 
 router.put('/:id/assign', complaintsController.assignStaffToComplaint);
 
+router.get('/complaints-over-time', complaintsController.getComplaintsOverTime);
+
+router.get('/completed-complaints-over-time', complaintsController.getCompletedComplaintsOverTime);
+
+
 module.exports = router;

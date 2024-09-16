@@ -1,6 +1,7 @@
-import {React, useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/NavbarLeft.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { Dashboard, BarChart, People, Work, Task } from '@mui/icons-material';
 
 const NavbarLeft = () => {
   const [user, setUser] = useState(null);
@@ -32,14 +33,28 @@ const NavbarLeft = () => {
   return (
     <div className="navbar-left">
       <ul>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        {/* Conditional rendering for Register Employee link */}
+        <li>
+          <Link to="/dashboard">
+            <Dashboard /> Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link to="/reports">
+            <BarChart /> Report
+          </Link>
+        </li>
         {(isAdmin() || isManager()) && (
-          <li><Link to="/add-employee">Register Employee</Link></li>
+          <li>
+            <Link to="/add-employee">
+              <People /> Add Employee
+            </Link>
+          </li>
         )}
-        <li><Link to="/complaint-reg">Complaint Registration</Link></li>
-        <li><Link to={viewComplaintsLink}>View Complaint</Link></li>
+        <li>
+          <Link to={viewComplaintsLink}>
+            <Task />Complaints
+          </Link>
+        </li>
       </ul>
     </div>
   );

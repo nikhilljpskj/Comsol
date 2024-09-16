@@ -1,4 +1,5 @@
 import {React, useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, LinearProgress, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Select, MenuItem, FormControl, IconButton } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -10,12 +11,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewComplaints from './ViewComplaints';
 
 import '../styles/Dashboard.css'; // Keep this if you have other custom styles
+import StatsPage from './StatsPage';
 
 const AdminDashboard = () => {
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [currentComplaintId, setCurrentComplaintId] = useState(null);
+  const navigate = useNavigate();
+  const [currentComplaintId, setCurrentComplaintId] = useState(null)
   const [projectStats, setProjectStats] = useState({
     "count_active_projects": 0,
     "count_pending_assignment": 0,
@@ -52,6 +55,18 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const localUser = localStorage.getItem('user');
+    if (localUser) {
+      const parsedUser = JSON.parse(localUser);      
+      // Check the user type immediately after parsing
+      if (parsedUser.user_type === 'Admin') {
+        console.log("helolla")
+        navigate('/')
+      }
+    }
+  }, []); // Empty dependency array to run only once
 
 
   useEffect(() => {
@@ -170,9 +185,13 @@ const AdminDashboard = () => {
         </Grid>
 
         {/* Active Complaints Table */}
-        <Box sx={{ mt: 4 }}>
-          <ViewComplaints />
+        <Box sx={{ mt: 5 }}>
+          <StatsPage />
         </Box>
+        {/* Active Complaints Table */}
+        {/* <Box sx={{ mt: 4 }}>
+          <ViewComplaints />
+        </Box> */}
       </div>
     </>
   );

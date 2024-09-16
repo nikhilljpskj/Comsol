@@ -9,6 +9,7 @@ import NavbarTop from './components/NavbarTop';
 import AppLayout from './components/AppLayout';
 import AdminDashboard from './components/AdminDashboard'
 import StaffDashboard from './components/StaffDashboard'
+import StatsPage from './components/StatsPage';
 
 import {LoginPage} from './components/LoginPage'
 
@@ -63,7 +64,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/add-employee" element={<AddEmployee />} />
           </Routes>
         </AppLayout>
       </Router>
@@ -81,7 +81,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/dashboard" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
-
+              <Route path="/reports" element={<StatsPage />} />
               <Route
                 path="/complaint-reg"
                 element={<ComplaintRegistration />}

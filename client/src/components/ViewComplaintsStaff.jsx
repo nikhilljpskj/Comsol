@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/ViewComplaintsStaff.css'; // Add your CSS file for styling
+import { 
+  Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Snackbar 
+} from '@mui/material';
+import Alert from '@mui/material/Alert';
 
 function ViewComplaintsStaff() {
   const [complaints, setComplaints] = useState([]);
@@ -86,74 +89,80 @@ function ViewComplaintsStaff() {
   };
 
   return (
-    <div>
-      <h2>Assigned Complaints</h2>
-      {error && <p className="error-message">{error}</p>}
-      {successMessage && <p className="success-message">{successMessage}</p>}
+    <Container sx={{mt:5}}>
+      <Typography variant="h4" gutterBottom>Assigned Complaints</Typography>
+      {error && <Snackbar open={true} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert onClose={() => setError(null)} severity="error">{error}</Alert>
+      </Snackbar>}
+      {successMessage && <Snackbar open={true} autoHideDuration={6000} onClose={() => setSuccessMessage(null)}>
+        <Alert onClose={() => setSuccessMessage(null)} severity="success">{successMessage}</Alert>
+      </Snackbar>}
 
-      <table>
-        <thead>
-          <tr>
-            <th>Complaint ID</th>
-            <th>Customer Name</th>
-            <th>Complaint</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {complaints.map((complaint) => (
-            <tr key={complaint.id}>
-              <td>{complaint.id}</td>
-              <td>{complaint.customer_name}</td>
-              <td>{complaint.complaint}</td>
-              <td>{getStatusLabel(complaint.status)}</td> {/* Display status label */}
-              <td>
-                <button onClick={() => handleView(complaint)}>View</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Complaint ID</TableCell>
+              <TableCell>Customer Name</TableCell>
+              <TableCell>Complaint</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {complaints.map((complaint) => (
+              <TableRow key={complaint.id}>
+                <TableCell>{complaint.id}</TableCell>
+                <TableCell>{complaint.customer_name}</TableCell>
+                <TableCell>{complaint.complaint}</TableCell>
+                <TableCell>{getStatusLabel(complaint.status)}</TableCell>
+                <TableCell>
+                  <Button variant="contained" color="primary" onClick={() => handleView(complaint)}>View</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <h3>Complaint Details</h3>
-            <p><strong>Name:</strong> {selectedComplaint.customer_name}</p>
-            <p><strong>Mobile:</strong> {selectedComplaint.mobile_number}</p>
-            <p><strong>Complaint:</strong> {selectedComplaint.complaint}</p>
+      {showPopup && selectedComplaint && (
+        <Dialog open={showPopup} onClose={() => setShowPopup(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>Complaint Details</DialogTitle>
+          <DialogContent>
+            <Typography><strong>Name:</strong> {selectedComplaint.customer_name}</Typography>
+            <Typography><strong>Mobile:</strong> {selectedComplaint.mobile_number}</Typography>
+            <Typography><strong>Complaint:</strong> {selectedComplaint.complaint}</Typography>
 
-            <div>
-              <label>Diagnosis:</label>
-              <input
-                type="text"
-                value={diagnosis}
-                onChange={(e) => setDiagnosis(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label>Additional Comment:</label>
-              <input
-                type="text"
-                value={additionalComment}
-                onChange={(e) => setAdditionalComment(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label>Staff Location:</label>
-              <input type="text" value={staffLocation} readOnly />
-              <button onClick={fetchLocation}>Fetch Location</button>
-            </div>
-
-            <button onClick={handleUpdate}>Update</button>
-            <button onClick={() => setShowPopup(false)}>Close</button>
-          </div>
-        </div>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Diagnosis"
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Additional Comment"
+              value={additionalComment}
+              onChange={(e) => setAdditionalComment(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Staff Location"
+              value={staffLocation}
+              readOnly
+            />
+            <Button variant="contained" color="secondary" onClick={fetchLocation}>Fetch Location</Button>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleUpdate} variant="contained" color="primary">Update</Button>
+            <Button onClick={() => setShowPopup(false)} variant="outlined">Close</Button>
+          </DialogActions>
+        </Dialog>
       )}
-    </div>
+    </Container>
   );
 }
 

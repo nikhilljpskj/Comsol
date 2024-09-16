@@ -36,6 +36,7 @@ function NavbarTop() {
     try {
       await axios.post('http://localhost:5000/api/auth/logout', {}, );
       localStorage.removeItem('user'); // Clear user from local storage
+      setUser(null);
       navigate('/login');
     } catch (error) {
       console.error('Error logging out:', error);
