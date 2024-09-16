@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/NavbarTop.css'
+import '../styles/NavbarTop.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Avatar } from '@mui/material'; // Importing Avatar component from MUI
 
 function NavbarTop() {
   const [user, setUser] = useState(null);
@@ -34,7 +35,7 @@ function NavbarTop() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/auth/logout', {}, );
+      await axios.post('http://localhost:5000/api/auth/logout', {});
       localStorage.removeItem('user'); // Clear user from local storage
       setUser(null);
       navigate('/login');
@@ -57,7 +58,8 @@ function NavbarTop() {
               onMouseEnter={() => setDropdownOpen(true)}
               onMouseLeave={() => setDropdownOpen(false)}
             >
-              {user.first_name}
+              <Avatar alt={user.first_name} src="/static/images/avatar/1.jpg" /> {/* Replace with actual avatar */}
+              <span className="username-text">{user.first_name}</span>
               {dropdownOpen && (
                 <div className="dropdown-menu">
                   <button onClick={handleProfile}>Profile</button>
