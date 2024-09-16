@@ -61,18 +61,3 @@
   background-color: #555;
   border-radius: 10px;
 }
-
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-  .navbar-left {
-    width: 120px; /* Adjusts the width on smaller screens */
-  }
-
-  .navbar-left ul li {
-    padding: 10px;
-  }
-
-  .navbar-left ul li a:hover {
-    padding-left: 15px;
-  }
-}

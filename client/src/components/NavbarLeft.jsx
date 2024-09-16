@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/NavbarLeft.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { Dashboard, BarChart, People, Work, Task } from '@mui/icons-material';
+import { Dashboard, BarChart, People, Task } from '@mui/icons-material';
 
 const NavbarLeft = () => {
   const [user, setUser] = useState(null);
@@ -38,11 +38,13 @@ const NavbarLeft = () => {
             <Dashboard /> Dashboard
           </Link>
         </li>
-        <li>
+        {(isAdmin() || isManager()) && (
+          <li>
           <Link to="/reports">
             <BarChart /> Report
           </Link>
         </li>
+        )}
         {(isAdmin() || isManager()) && (
           <li>
             <Link to="/add-employee">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/Profile.css';
 
-
 function Profile() {
   const [user, setUser] = useState({});
   const [password, setPassword] = useState('');
@@ -25,7 +24,6 @@ function Profile() {
     };
     fetchUserData();
   }, []);
-  
 
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
@@ -54,35 +52,53 @@ function Profile() {
   return (
     <div className="profile-container">
       <h2>User Profile</h2>
-      <div className="profile-details">
-        <p><strong>First Name:</strong> {user.first_name}</p>
-        <p><strong>Last Name:</strong> {user.last_name}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Mobile:</strong> {user.mobile}</p>
-        <p><strong>Office:</strong> {user.office}</p>
-        <p><strong>Office Address:</strong> {user.office_address}</p>
-        <p><strong>Gender:</strong> {user.gender}</p>
-      </div>
+      <div className="profile-content">
+        <div className="profile-details">
+          <div className="profile-info">
+            <strong>First Name:</strong> {user.first_name}
+          </div>
+          <div className="profile-info">
+            <strong>Last Name:</strong> {user.last_name}
+          </div>
+          <div className="profile-info">
+            <strong>Email:</strong> {user.email}
+          </div>
+          <div className="profile-info">
+            <strong>Mobile:</strong> {user.mobile}
+          </div>
+          <div className="profile-info">
+            <strong>Office:</strong> {user.office}
+          </div>
+          <div className="profile-info">
+            <strong>Office Address:</strong> {user.office_address}
+          </div>
+          <div className="profile-info">
+            <strong>Gender:</strong> {user.gender}
+          </div>
+        </div>
 
-      <h3>Update Password</h3>
-      <form onSubmit={handlePasswordUpdate}>
-        <input
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Update Password</button>
-      </form>
-      {message && <p>{message}</p>}
+        <div className="profile-password">
+          <h3>Update Password</h3>
+          <form onSubmit={handlePasswordUpdate}>
+            <input
+              type="password"
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Update Password</button>
+          </form>
+          {message && <p className="message">{message}</p>}
+        </div>
+      </div>
     </div>
   );
 }

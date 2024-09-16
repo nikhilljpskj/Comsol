@@ -2,7 +2,6 @@ import {React, useEffect, useState} from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddEmployee from './components/AddEmployee';
 import axios from 'axios';
-import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import NavbarLeft from './components/NavbarLeft';
 import NavbarTop from './components/NavbarTop';
@@ -10,7 +9,6 @@ import AppLayout from './components/AppLayout';
 import AdminDashboard from './components/AdminDashboard'
 import StaffDashboard from './components/StaffDashboard'
 import StatsPage from './components/StatsPage';
-
 import {LoginPage} from './components/LoginPage'
 
 
@@ -81,13 +79,12 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/dashboard" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
-              <Route path="/reports" element={<StatsPage />} />
               <Route
                 path="/complaint-reg"
                 element={<ComplaintRegistration />}
               />
               <Route path="/views-complaints" element={<ViewComplaints />} />
-
+              <Route path="/reports" element={<StatsPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/views-complaints-staff" element={<ViewComplaintsStaff />} />
             </Routes>

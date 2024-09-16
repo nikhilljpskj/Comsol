@@ -91,16 +91,16 @@ export const LoginPage = () => {
             placeholder="Enter your password"
           />
 
-          <a href="">Forgot password?</a>
+          {/* <a href="">Forgot password?</a> */}
 
           <input type="submit" className="button" value="Login" />
         </form>
-        <div className="signup">
+        {/* <div className="signup">
           <span className="signup">
             Don't have an account?
             <label htmlFor="check">Signup</label>
           </span>
-        </div>
+        </div> */}
       </div>
     
     
