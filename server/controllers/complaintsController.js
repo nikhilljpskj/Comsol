@@ -62,6 +62,46 @@ exports.getAssignedComplaintsCount = (req, res) => {
   });
 };
 
+// Fetch count of active projects, pending assignments, and employee count
+exports.getCountOfAllComplaints = (req, res) => {
+  const countActiveProjectsQuery = 'SELECT count(id) as count_active_projects FROM complaints WHERE status != "2"';
+  const countPendingAssignmentQuery = 'SELECT count(id) as count_pending_assignment FROM complaints WHERE status = "1"';
+  const employeeCountQuery = 'SELECT count(id) as employee_count FROM users';
+
+  // Run all queries in parallel using Promise.all
+  Promise.all([
+    new Promise((resolve, reject) => {
+      db.query(countActiveProjectsQuery, (err, results) => {
+        if (err) return reject(err);
+        resolve(results[0].count_active_projects);  // Accessing first row
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(countPendingAssignmentQuery, (err, results) => {
+        if (err) return reject(err);
+        resolve(results[0].count_pending_assignment); // Accessing first row
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(employeeCountQuery, (err, results) => {
+        if (err) return reject(err);
+        resolve(results[0].employee_count); // Accessing first row
+      });
+    })
+  ])
+    .then(([count_active_projects, count_pending_assignment, employee_count]) => {
+      // Return results in a single object
+      res.status(200).json({
+        count_active_projects,
+        count_pending_assignment,
+        employee_count
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
 // Fetch all complaints
 exports.getAllComplaints = (req, res) => {
   const sql = 'SELECT * FROM complaints ORDER BY created_at DESC';

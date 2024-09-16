@@ -7,6 +7,8 @@ router.post('/', complaintsController.registerComplaint);
 
 router.get('/', complaintsController.getAllComplaints);
 
+router.get('/admin-stats', complaintsController.getCountOfAllComplaints);
+
 router.get('/:assignedStaffID/count', complaintsController.getAssignedComplaintsCount);
 
 router.get('/:assignedStaffID/assigned', complaintsController.getAssignedComplaints);

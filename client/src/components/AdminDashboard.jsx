@@ -1,4 +1,5 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
+import axios from 'axios';
 import { Card, CardContent, Typography, Grid, LinearProgress, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Select, MenuItem, FormControl, IconButton } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import PeopleIcon from '@mui/icons-material/People';
@@ -15,22 +16,73 @@ const AdminDashboard = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [currentComplaintId, setCurrentComplaintId] = useState(null);
+  const [projectStats, setProjectStats] = useState({
+    "count_active_projects": 0,
+    "count_pending_assignment": 0,
+    "employee_count": 0
+  });
 
+  const [progress, setProgress] = useState({
+    projects: 0,
+    pending: 0,
+    staff: 0,
+  });
 
-  const dummyData = {
-    activeComplaints: 15,
-    staffCount: 12,
-    pendingComplaints: 7,
-    maxComplaints: 100, // Define a maximum complaint threshold for the progress bar
+  
+  const [loading, setLoading] = useState(true);
 
+  const colorSetter = (value) =>{
+    if(value <50){
+      return "success"
+    }
+    else if(value < 80){
+      return "warning"
+    }
+    else{
+      return 'error'
+    }
+  }
+
+  const fetchProjectDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/complaints/admin-stats');
+      setProjectStats(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
+
+
+  useEffect(() => {
+    fetchProjectDetails();
+  },[]);
+
+  useEffect(() => {
+    if (projectStats.count_active_projects > 0) {
+      setProgress({
+        projects: calculateProgress(
+          projectStats.count_active_projects - projectStats.count_pending_assignment,
+          projectStats.count_active_projects
+        ),
+        pending: calculateProgress(
+          projectStats.count_pending_assignment,
+          projectStats.count_active_projects
+        ),
+        staff: calculateProgress(
+          projectStats.count_pending_assignment,
+          projectStats.employee_count,
+        ),
+      });
+    }
+    console.log(progress)
+  }, [projectStats]); // Dependency array
 
   const calculateProgress = (value, max) => (value / max) * 100;
 
 
   return (
     <>
-      {/* <NavbarTop /> */}
       <div className="dashboard-container">
         <Grid container spacing={3}>
           {/* Active Complaints Card */}
@@ -44,16 +96,13 @@ const AdminDashboard = () => {
                   </Typography>
                 </Box>
                 <Typography variant="h2" color="primary">
-                  {dummyData.activeComplaints}
+                  {projectStats.count_active_projects}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
                   <LinearProgress
                     variant="determinate"
-                    value={calculateProgress(
-                      dummyData.activeComplaints,
-                      dummyData.maxComplaints
-                    )}
-                    color="error"
+                    value={progress.projects}
+                    color={colorSetter(progress.projects)}
                   />
                   <Typography variant="caption" color="textSecondary">
                     Complaints Progress
@@ -74,17 +123,14 @@ const AdminDashboard = () => {
                   </Typography>
                 </Box>
                 <Typography variant="h2" color="primary">
-                  {dummyData.pendingComplaints}
+                  {projectStats.count_pending_assignment}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
                   {/* Compare pending complaints to active complaints */}
                   <LinearProgress
                     variant="determinate"
-                    value={calculateProgress(
-                      dummyData.pendingComplaints,
-                      dummyData.activeComplaints
-                    )}
-                    color="warning"
+                    value={progress.pending}
+                    color={colorSetter(progress.pending)}
                   />
                   <Typography variant="caption" color="textSecondary">
                     Pending Complaints Progress
@@ -105,8 +151,19 @@ const AdminDashboard = () => {
                   </Typography>
                 </Box>
                 <Typography variant="h2" color="primary">
-                  {dummyData.staffCount}
+                  {projectStats.employee_count}
                 </Typography>
+                <Box sx={{ mt: 2 }}>
+                  {/* depleted workforce */}
+                  <LinearProgress
+                    variant="determinate"
+                    value={progress.staff > 100 ? 100 : progress.staff}
+                    color={colorSetter(progress.staff > 100 ? 100 : progress.staff)}
+                  />
+                  <Typography variant="caption" color="textSecondary">
+                    Remaining workforce
+                  </Typography>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
@@ -114,7 +171,7 @@ const AdminDashboard = () => {
 
         {/* Active Complaints Table */}
         <Box sx={{ mt: 4 }}>
-        <ViewComplaints/>
+          <ViewComplaints />
         </Box>
       </div>
     </>

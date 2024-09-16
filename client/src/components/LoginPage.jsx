@@ -124,7 +124,8 @@ export const LoginPage = () => {
           <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
 
          <div className="two-column">
-         <select name="userType" onSubmit={handleChange} onChange={handleChange}>
+         <select required name="userType" onSubmit={handleChange} onChange={handleChange}>
+            <option value="">--Select user type--</option>
             <option value="Admin">Admin</option>
             <option value="Manager">Manager</option>
             <option value="Staff">Staff</option>
