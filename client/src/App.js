@@ -17,6 +17,7 @@ import './App.css';
 import ComplaintRegistration from './components/ComplaintRegistration';
 import ViewComplaints from './components/ViewComplaints';
 import Profile from './components/Profile';
+import ViewComplaintsStaff from './components/ViewComplaintsStaff';
 
 function App() {
 
@@ -88,6 +89,7 @@ function App() {
               <Route path="/views-complaints" element={<ViewComplaints />} />
 
               <Route path="/profile" element={<Profile />} />
+              <Route path="/views-complaints-staff" element={<ViewComplaintsStaff />} />
             </Routes>
           </AppLayout>
         </div>

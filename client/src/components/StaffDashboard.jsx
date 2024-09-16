@@ -64,7 +64,6 @@ const StaffDashboard = () => {
 
   return (
     <>
-      <NavbarTop />
       <div className="dashboard-container">
         <Grid container spacing={3}>
           {/* Active Complaints Card */}

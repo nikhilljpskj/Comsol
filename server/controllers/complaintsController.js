@@ -42,6 +42,26 @@ exports.registerComplaint = (req, res) => {
 };
 
 
+// Fetch assigned complaints only [staff]
+exports.getAssignedComplaints = (req, res) => {
+  const {assignedStaffID} = req.params;
+  const sql = 'SELECT * FROM complaints where staff_assigned=? ORDER BY created_at DESC';
+  db.query(sql, [assignedStaffID], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.status(200).json(results);
+  });
+};
+
+// Fetch assigned complaints count [staff]
+exports.getAssignedComplaintsCount = (req, res) => {
+  const {assignedStaffID} = req.params;
+  const sql = 'SELECT COUNT(id) as no-complaints FROM complaints where staff_assigned=?';
+  db.query(sql, [assignedStaffID], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.status(200).json(results);
+  });
+};
+
 // Fetch all complaints
 exports.getAllComplaints = (req, res) => {
   const sql = 'SELECT * FROM complaints ORDER BY created_at DESC';
