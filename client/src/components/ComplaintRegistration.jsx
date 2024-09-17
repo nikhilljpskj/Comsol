@@ -3,6 +3,7 @@ import axios from 'axios';
 import { TextField, Button, Typography, Grid, Paper, InputAdornment } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import CustomerNavbar from './CustomerNavbar';
 
 function ComplaintRegistration() {
   const [customerName, setCustomerName] = useState('');
@@ -93,6 +94,8 @@ function ComplaintRegistration() {
   };
 
   return (
+    <>
+    <CustomerNavbar id={localStorage.getItem("complaint_id")}/>
     <Paper elevation={3} sx={{ padding: 3, maxWidth: 600, margin: 'auto', mt: 4 }}>
       <Typography variant="h4" gutterBottom align="center">
         Register Complaint
@@ -211,6 +214,8 @@ function ComplaintRegistration() {
         </Grid>
       </form>
     </Paper>
+    </>
+
   );
 }
 

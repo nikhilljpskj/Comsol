@@ -11,3 +11,9 @@
 .icon{
   color: green;
 }
+
+@media(max-width: 720px){
+  .cards-container{
+    flex-direction: column;
+  }
+}

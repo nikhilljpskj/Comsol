@@ -27,8 +27,8 @@ const ComplaintTimeline = () => {
   ];
   return (
     <div className="cards-container">
-      {timelineSteps.map((item,index)=>(
-        <div className="card">
+      {timelineSteps.map((item,key)=>(
+        <div id={key} className="card">
          <h3>{item.label}</h3>
          <div className="icon">{item.icon}</div> 
          <p>{item.description}</p>

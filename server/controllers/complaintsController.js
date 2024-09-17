@@ -135,11 +135,11 @@ exports.assignStaffToComplaint = (req, res) => {
 
       // Send WhatsApp message
 
-      complaintStatusUrl = `${process.env.DEV_PATH_CLIENT}/${id}/complaint-status`
+      complaintStatusUrl = `${process.env.DEV_PATH_CLIENT}/customer/complaint-status/${id}`
 
       client.messages
       .create({
-        body: `Hello ${customerName}, your complaint has been assigned to staff member with ID: ${staff_assigned}. You can check the status of your complaint here: ${complaintStatusUrl}`,
+        body: `Hello ${customerName}, your complaint has been assigned to our staff member with ID: ${staff_assigned}. You can check the status of your complaint here: ${complaintStatusUrl}`,
         from: `whatsapp:${twilioWhatsAppNumber}`,
         to: `whatsapp:${formattedWhatsAppNumber}`
       })

@@ -34,15 +34,15 @@ h2 {
 }
 
 .status.assigned {
-  background-color: #007bff; /* Blue for assigned */
+  background-color: orange; /* Blue for assigned */
 }
 
 .status.completed {
-  background-color: #28a745; /* Green for completed */
+  background-color: rgb(0, 172, 0); /* Green for completed */
 }
 
 .status.unknown {
-  background-color: #6c757d; /* Grey for unknown status */
+  background-color: rgb(239, 239, 0); /* Grey for unknown status */
 }
 
 .error-message, .loading-message {

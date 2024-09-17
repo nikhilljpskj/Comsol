@@ -1,10 +1,7 @@
 import {React, useEffect, useState} from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import AddEmployee from './components/AddEmployee';
 import axios from 'axios';
-import Dashboard from './components/Dashboard';
-import NavbarLeft from './components/NavbarLeft';
-import NavbarTop from './components/NavbarTop';
 import AppLayout from './components/AppLayout';
 import AdminDashboard from './components/AdminDashboard'
 import StaffDashboard from './components/StaffDashboard'
@@ -22,6 +19,7 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { id } = useParams();
 
   const fetchCurrentUser = async () => {
     try {
@@ -62,6 +60,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/customer/complaint-registration"
+              element={<ComplaintRegistration />}
+            />
+            <Route
+              path="/customer/complaint-status/:id"
+              element={<ComplaintStatus id={id} />}
+            />
           </Routes>
         </AppLayout>
       </Router>
@@ -80,14 +86,14 @@ function App() {
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/dashboard" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
               <Route
-                path="/complaint-reg"
+                path="/customer/complaint-registration"
                 element={<ComplaintRegistration />}
               />
               <Route path="/views-complaints" element={<ViewComplaints />} />
               <Route path="/reports" element={<StatsPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/views-complaints-staff" element={<ViewComplaintsStaff />} />
-              <Route path="/complaint-status/:id" element={<ComplaintStatus />} />
+              <Route path="/customer/complaint-status/:id" element={<ComplaintStatus id={id}/>} />
             </Routes>
           </AppLayout>
         </div>

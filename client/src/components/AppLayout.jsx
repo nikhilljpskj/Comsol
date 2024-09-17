@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbarleft from './NavbarLeft'; // Assuming you have a SideNav component
-import NavbarTop from './NavbarTop'
-import './AppLayout.css'
+import NavbarTop from './NavbarTop';
+import './AppLayout.css';
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -10,15 +10,16 @@ const AppLayout = ({ children }) => {
   // List of paths where the side nav should be hidden
   const pathsWithoutSideNav = ['/login', '/register', '/about'];
 
-  // Condition to determine whether to show side nav or not
-  const showSideNav = !pathsWithoutSideNav.includes(location.pathname);
-  const contentClassName = showSideNav ? 'content' : 'base';
+  // Add the dynamic route to the no-sidenav list
+  const shouldHideSideNav = pathsWithoutSideNav.includes(location.pathname) || location.pathname.startsWith('/customer');
+
+  const contentClassName = !shouldHideSideNav ? 'content' : 'base';
 
   return (
     <div className="app-layout">
-      {showSideNav && <Navbarleft />}
+      {!shouldHideSideNav && <Navbarleft />}
       <div className={contentClassName}>
-      {showSideNav && <NavbarTop />}
+        {!shouldHideSideNav && <NavbarTop />}
         {children}
       </div>
     </div>

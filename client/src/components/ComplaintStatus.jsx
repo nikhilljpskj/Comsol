@@ -2,22 +2,28 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './ComplaintStatus.css'; // Create CSS to style this page
-import ComplaintTimeline from './ComplaintTimeline'
+import ComplaintTimeline from './ComplaintTimeline';
+import LinearProgress from '@mui/material/LinearProgress';
+import CustomerNavbar from './CustomerNavbar';
+import Error from './Error';
 
 function ComplaintStatus() {
-  const { id } = useParams(); // Get complaint ID from URL params
+  const { id } = useParams();
   const [complaint, setComplaint] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch complaint data
     const fetchComplaint = async () => {
       try {
+        localStorage.setItem('complaint_id',id);
         const response = await axios.get(`http://localhost:5000/api/complaints/${id}`);
         setComplaint(response.data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
-        setError('Failed to fetch complaint details.');
-        console.error(error);
+        setError('Please use the link sent to your registered WhatsApp Number,');
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
@@ -34,33 +40,39 @@ function ComplaintStatus() {
       case 2:
         return <span className="status completed">Completed & Archived</span>;
       default:
-        return <span className="status unknown">Unknown</span>;
+        return <span className="status unknown">We are working on it</span>;
     }
   };
 
+  if (loading) {
+    return <LinearProgress />;
+  }
+
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <Error message={error}/>;
   }
 
   if (!complaint) {
-    return <div className="loading-message">Loading complaint details...</div>;
+    return <div>No complaint data available.</div>; // Handle if complaint is null
   }
 
   return (
     <>
-    <div className="complaint-status-container">
-      <h2>Complaint Status</h2>
-      <div className="complaint-details">
-        <p><strong>Customer Name:</strong> {complaint.customer_name}</p>
-        <p><strong>Complaint ID:</strong> {complaint.id}</p>
-        <p><strong>Complaint Description:</strong> {complaint.complaint_description}</p>
-        <p><strong>Assigned Staff:</strong> {complaint.staff_assigned || 'Not Assigned'}</p>
-        <p><strong>Status:</strong> {renderStatus(complaint.status)}</p>
+    <CustomerNavbar id={id}/>
+    <div className="base-container w-100">
+      <div className="complaint-status-container">
+        <h2>Complaint Status</h2>
+        <div className="complaint-details">
+          {/* <p><strong>Customer Name:</strong> {complaint.customer_name}</p> */}
+          <p><strong>Complaint ID:</strong> {complaint.id}</p>
+          <p><strong>Complaint Description:</strong> {complaint.complaint}</p>
+          <p><strong>Assigned Staff:</strong> {complaint.staff_assigned || 'Pending'}</p>
+          <p><strong>Status:</strong> {renderStatus(complaint.status)}</p>
+        </div>
       </div>
+      <ComplaintTimeline />
     </div>
-    <ComplaintTimeline/>
     </>
-
   );
 }
 
