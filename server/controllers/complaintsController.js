@@ -134,12 +134,15 @@ exports.assignStaffToComplaint = (req, res) => {
       if (err) return res.status(500).send({ message: 'Failed to assign employee.' });
 
       // Send WhatsApp message
+
+      complaintStatusUrl = `${process.env.DEV_PATH_CLIENT}/${id}/complaint-status`
+
       client.messages
-        .create({
-          body: `The complaint from ${customerName} has been assigned to staff member with ID: ${staff_assigned}.`,
-          from: `whatsapp:${twilioWhatsAppNumber}`,
-          to: `whatsapp:${formattedWhatsAppNumber}`
-        })
+      .create({
+        body: `Hello ${customerName}, your complaint has been assigned to staff member with ID: ${staff_assigned}. You can check the status of your complaint here: ${complaintStatusUrl}`,
+        from: `whatsapp:${twilioWhatsAppNumber}`,
+        to: `whatsapp:${formattedWhatsAppNumber}`
+      })
         .then(message => {
           console.log('WhatsApp message sent:', message.sid);
           res.status(200).send({ message: 'Employee assigned successfully and WhatsApp message sent.' });
@@ -181,3 +184,19 @@ exports.getCompletedComplaintsOverTime = (req, res) => {
     res.status(200).json(results);
   });
 };
+
+// Fetch complaint details by ID
+exports.getComplaintById = (req, res) => {
+  const { id } = req.params;
+  const getComplaintSql = `
+    SELECT id, customer_name, whatsapp_number, complaint, staff_assigned, status 
+    FROM complaints WHERE id = ?`;
+  
+  db.query(getComplaintSql, [id], (err, results) => {
+    if (err || results.length === 0) {
+      return res.status(404).send({ message: 'Complaint not found.' });
+    }
+    res.status(200).send(results[0]);
+  });
+};
+

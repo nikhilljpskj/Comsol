@@ -10,7 +10,7 @@ import AdminDashboard from './components/AdminDashboard'
 import StaffDashboard from './components/StaffDashboard'
 import StatsPage from './components/StatsPage';
 import {LoginPage} from './components/LoginPage'
-
+import ComplaintStatus from './components/ComplaintStatus'
 
 import './App.css';
 import ComplaintRegistration from './components/ComplaintRegistration';
@@ -87,6 +87,7 @@ function App() {
               <Route path="/reports" element={<StatsPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/views-complaints-staff" element={<ViewComplaintsStaff />} />
+              <Route path="/complaint-status/:id" element={<ComplaintStatus />} />
             </Routes>
           </AppLayout>
         </div>

@@ -19,5 +19,8 @@ router.get('/complaints-over-time', complaintsController.getComplaintsOverTime);
 
 router.get('/completed-complaints-over-time', complaintsController.getCompletedComplaintsOverTime);
 
+router.get('/:id', complaintsController.getComplaintById);
+
+
 
 module.exports = router;
