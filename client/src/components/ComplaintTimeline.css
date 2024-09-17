@@ -1,31 +1,13 @@
-.timeline-container {
-  margin: 20px;
-  padding: 20px;
-  background-color: #f7f7f7;
-  border-radius: 10px;
-}
-
-.timeline-label {
-  font-weight: bold;
-  color: #007bff;
-}
-
-.timeline-dot {
-  background-color: #007bff;
-  color: white;
-}
-
-.timeline-container .MuiTimelineOppositeContent-root {
+.cards-container{
   display: flex;
-  align-items: center;
+  margin: 2rem 4rem;
+  gap: 3rem;
 }
-
-.timeline-container .MuiTimelineItem-root {
-  min-width: 200px;
-  margin-bottom: 30px;
-}
-
-.MuiTimelineContent-root {
+.card{
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.icon{
+  color: green;
 }
