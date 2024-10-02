@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: '',
+  user: 'comsol_db',
+  password: '8086689923',
   database: 'comsol'
 });
 
