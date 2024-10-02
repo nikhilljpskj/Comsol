@@ -13,7 +13,11 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: '*', // Change this to your frontend URL in production
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, // Allows cookies to be sent across domains
+}));
 
 // Sessions
 app.use(session({
