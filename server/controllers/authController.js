@@ -15,6 +15,7 @@ exports.register = (req, res) => {
 
 // Login Controller
 exports.login = (req, res) => {
+  console.log("working until here trying to login");
   const { email, password } = req.body;
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.query(sql, [email], (err, result) => {
