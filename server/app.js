@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const logger = require('./logger');
 
 // Assuming you are using routes from another file like authRoutes
 const authRoutes = require('./routes/auth');  // Make sure this is correctly exported
@@ -18,6 +19,10 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true, // Allows cookies to be sent across domains
 }));
+
+// Use the logger middleware
+app.use(logger);
+
 
 // Sessions
 app.use(session({
