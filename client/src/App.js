@@ -23,7 +23,7 @@ function App() {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auth/current-user', { withCredentials: true });
+      const response = await axios.get('/api/auth/current-user', { withCredentials: true });
       if (response.data.success) {
         setUser(response.data.user);
         console.log("Successfully fetched data");

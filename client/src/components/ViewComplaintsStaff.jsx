@@ -21,7 +21,7 @@ function ViewComplaintsStaff() {
       try {
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
         if (loggedInUser && loggedInUser.id) {
-          const response = await axios.get(`http://localhost:5000/api/viewcomplaintsstaff/${loggedInUser.id}`);
+          const response = await axios.get(`/api/viewcomplaintsstaff/${loggedInUser.id}`);
           setComplaints(response.data);
         } else {
           setError('User is not logged in.');
@@ -74,7 +74,7 @@ function ViewComplaintsStaff() {
   // Handle updating the complaint with diagnosis, additional comments, and location
   const handleUpdate = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/viewcomplaintsstaff/update/${selectedComplaint.id}`, {
+      const response = await axios.put(`/api/viewcomplaintsstaff/update/${selectedComplaint.id}`, {
         diagnosis,
         additionalComment,
         staffLocation

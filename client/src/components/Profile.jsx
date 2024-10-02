@@ -14,7 +14,7 @@ function Profile() {
       const loggedInUser = JSON.parse(localStorage.getItem('user')); // Retrieve user from local storage
       if (loggedInUser) {
         try {
-          const response = await axios.get(`http://localhost:5000/api/users/${loggedInUser.id}`);
+          const response = await axios.get(`/api/users/${loggedInUser.id}`);
           setUser(response.data);
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -33,7 +33,7 @@ function Profile() {
     }
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/users/update-password`, {
+      const response = await axios.put(`/api/users/update-password`, {
         id: user.id,
         password
       });
