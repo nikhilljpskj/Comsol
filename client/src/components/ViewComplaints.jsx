@@ -23,7 +23,7 @@ function ViewComplaints() {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('/api/complaints');
+        const response = await axios.get('http://localhost:5000/api/complaints');
         setComplaints(response.data);
         setLoading(false);
       } catch (error) {
@@ -34,7 +34,7 @@ function ViewComplaints() {
 
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('/api/users/staff');
+        const response = await axios.get('http://localhost:5000/api/users/staff');
         setEmployees(response.data);
       } catch (error) {
         setError('Failed to fetch employees.');
@@ -63,7 +63,7 @@ function ViewComplaints() {
       setMessage("");
     }
     try {
-      await axios.put(`/api/complaints/${selectedComplaint.id}/assign`, {
+      await axios.put(`http://localhost:5000/api/complaints/${selectedComplaint.id}/assign`, {
         staff_assigned: assignedEmployee,
       });
 

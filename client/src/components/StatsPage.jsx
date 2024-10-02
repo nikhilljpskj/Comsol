@@ -13,7 +13,7 @@ const StatsPage = () => {
 
   useEffect(() => {
     // Fetch number of complaints over time
-    axios.get('/api/complaints/complaints-over-time')
+    axios.get('http://localhost:5000/api/complaints/complaints-over-time')
       .then(response => {
         setComplaintsData(response.data);
       })
@@ -22,7 +22,7 @@ const StatsPage = () => {
       });
 
     // Fetch number of completed complaints over time
-    axios.get('/api/complaints/completed-complaints-over-time')
+    axios.get('http://localhost:5000/api/complaints/completed-complaints-over-time')
       .then(response => {
         setCompletedData(response.data);
       })

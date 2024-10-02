@@ -48,7 +48,7 @@ const AdminDashboard = () => {
 
   const fetchProjectDetails = async () => {
     try {
-      const response = await axios.get('/api/complaints/admin-stats');
+      const response = await axios.get('http://localhost:5000/api/complaints/admin-stats');
       setProjectStats(response.data);
       setLoading(false);
     } catch (error) {

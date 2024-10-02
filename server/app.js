@@ -24,9 +24,9 @@ app.use(session({
 }));
 
 // Route setup
-app.use('/api/auth', authRoutes);  // Check that authRoutes is a router or middleware function
-app.use('/api/complaints', complaintsRoutes);
-app.use('/api/users', usersRoutes);
+app.use('http://localhost:5000/api/auth', authRoutes);  // Check that authRoutes is a router or middleware function
+app.use('http://localhost:5000/api/complaints', complaintsRoutes);
+app.use('http://localhost:5000/api/users', usersRoutes);
 app.use('/api', viewComplaintStaffRoutes);
 
 

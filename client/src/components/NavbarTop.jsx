@@ -21,7 +21,7 @@ function NavbarTop() {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+      const response = await axios.get('http://localhost:5000/api/auth/current-user', { withCredentials: true });
       if (response.data.success) {
         setUser(response.data.user);
       } else {
@@ -35,7 +35,7 @@ function NavbarTop() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout', {});
+      await axios.post('http://localhost:5000/api/auth/logout', {});
       localStorage.removeItem('user');
       setUser(null);
       navigate('/login');

@@ -69,7 +69,7 @@ function ComplaintRegistration() {
     }
 
     try {
-      const response = await axios.post('/api/complaints', {
+      const response = await axios.post('http://localhost:5000/api/complaints', {
         customerName,
         customerEmail,
         mobileNumber,

@@ -14,7 +14,7 @@ export const LoginPage = () => {
     const handleLogin = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post('/api/auth/login', {
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
           email,
           password
         }, ); // Include credentials for sessions
@@ -51,7 +51,7 @@ export const LoginPage = () => {
         e.preventDefault();
         try {
           // Make sure the API URL points to the correct backend URL 
-          const response = await axios.post('/api/auth/register', formData);
+          const response = await axios.post('http://localhost:5000/api/auth/register', formData);
           console.log(response.data);
         } catch (error) {
           console.error(error);

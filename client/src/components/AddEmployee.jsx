@@ -42,7 +42,7 @@ function Registration() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/api/auth/register",
+        "http://localhost:5000/api/auth/register",
         formData
       );
       handleOpen();

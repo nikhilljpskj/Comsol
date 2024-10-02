@@ -18,7 +18,7 @@ function ComplaintStatus() {
     const fetchComplaint = async () => {
       try {
         localStorage.setItem('complaint_id',id);
-        const response = await axios.get(`/api/complaints/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/complaints/${id}`);
         setComplaint(response.data);
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
