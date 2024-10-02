@@ -38,7 +38,7 @@ const StaffDashboard = () => {
       try {
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
         if (loggedInUser && loggedInUser.id) {
-          const response = await axios.get(`http://localhost:5000/api/complaints/${loggedInUser.id}/count`);
+          const response = await axios.get(`/api/complaints/${loggedInUser.id}/count`);
           setStats(response.data[0]);
         } 
       } catch (error) {
