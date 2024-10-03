@@ -21,7 +21,7 @@ function NavbarTop() {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+      const response = await axios.get('/api/users/current-user', { withCredentials: true });
       if (response.data.success) {
         setUser(response.data.user);
       } else {
