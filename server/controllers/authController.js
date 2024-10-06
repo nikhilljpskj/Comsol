@@ -1,6 +1,18 @@
 const db = require('../db/db');
 const bcrypt = require('bcryptjs');
 
+
+exports.getUser = (req, res) => {
+  if (!req.session.user) {
+    req.session.user = null;  // Explicitly set user to null if it's not already set
+    console.log('Current User Request: null');
+    return res.status(401).send({ success: false, message: 'Not authenticated' });
+  }
+  res.status(200).send({ success: true, user: req.session.user });
+};
+
+
+
 // Register Controller
 exports.register = (req, res) => {
   const { firstName, lastName, userType, email, mobile, office, officeAddress, gender, password } = req.body;
@@ -15,7 +27,6 @@ exports.register = (req, res) => {
 
 // Login Controller
 exports.login = (req, res) => {
-  console.log("working until here trying to login");
   const { email, password } = req.body;
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.query(sql, [email], (err, result) => {
@@ -23,13 +34,21 @@ exports.login = (req, res) => {
     if (result.length === 0) return res.status(401).send({ success: false, message: 'User not found' });
 
     const user = result[0];
-    const passwordMatch = bcrypt.compareSync(password, user.password); // Use bcryptjs to compare passwords
+    const passwordMatch = bcrypt.compareSync(password, user.password);
     if (!passwordMatch) return res.status(401).send({ success: false, message: 'Invalid credentials' });
 
     req.session.user = user; // Storing user in session
-    res.status(200).send({ success: true, message: 'Login successful', user });
+
+    // Explicitly save session before responding
+    req.session.save((err) => {
+      if (err) return res.status(500).send({ success: false, message: 'Session save failed' });
+      res.status(200).send({ success: true, message: 'Login successful', user });
+    });
   });
 };
+
+
+
 
 // Logout Controller
 exports.logout = (req, res) => {
@@ -41,10 +60,10 @@ exports.logout = (req, res) => {
 
 // Current User Controller
 exports.getCurrentUser = (req, res) => {
-  console.log('Current User Request:', req.session.user); // Debugging line
   if (!req.session.user) {
+    req.session.user = null;  // Explicitly set user to null if it's not already set
+    console.log('Current User Request: null');
     return res.status(401).send({ success: false, message: 'Not authenticated' });
   }
   res.status(200).send({ success: true, user: req.session.user });
 };
-

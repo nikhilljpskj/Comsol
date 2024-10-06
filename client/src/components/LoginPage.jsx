@@ -1,176 +1,67 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css'
+import './LoginPage.css';
 import axios from 'axios';
 
 export const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // Hook to navigate to other routes
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();  // Hook to navigate to other routes
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    try {
+      // Send login request
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
+      }, { withCredentials: true });
+      console.log(response.data);
 
-  
-    const handleLogin = async (e) => {
-      e.preventDefault();
-      try {
-        const response = await axios.post('/api/auth/login', {
-          email,
-          password
-        }, ); // Include credentials for sessions
-  
-        if (response.data.success) {
-          // Save user data or token to local storage
-          localStorage.setItem('user', JSON.stringify(response.data.user));  
-          // Redirect to /dashboard and pass a success message
-          navigate('/', { state: { message: 'Login successful' } });
-        }
-      } catch (error) {
+      if (response.data.success) {
+        // Redirect to home page with a success message
+        navigate('/dashboard', { state: { message: 'Login successful' } });
+
+        // Save user data to localStorage only after successful login
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      } else {
+        // Handle unsuccessful login
         setError('Login failed. Please check your credentials.');
       }
-    };
-
-    //handle registration here
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        userType: '',
-        email: '',
-        mobile: '',
-        office: '',
-        officeAddress: '',
-        gender: '',
-        password_reg: ''
-      });
-    
-      const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-      };
-    
-      const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-          // Make sure the API URL points to the correct backend URL 
-          const response = await axios.post('/api/auth/register', formData);
-          console.log(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-    const handleNumberChange = (e) => {
-      const { value } = e.target;
-
-      // Phone number validation - only allow digits and ensure it's 10 digits long
-      const phoneRegex = /^[0-9]{0,10}$/; // Accepts up to 10 digits
-      if (phoneRegex.test(value)) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        console.log('success', value)
-        setError(""); // Clear the error if the input is valid
-      } else {
-        setError("Please enter a valid 10-digit phone number.");
-      }
-    };
-
+    } catch (error) {
+      // Handle network errors or unexpected errors
+      setError('Login failed. Please check your credentials.');
+    }
+  };
 
   return (
     <div className="login-reg-form-container">
       <div className="container">
-      <input type="checkbox" id="check" />
-      <div className="login form">
-        <header>Login</header>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          />
-
-          {/* <a href="">Forgot password?</a> */}
-
-          <input type="submit" className="button" value="Login" />
-        </form>
-        {/* <div className="signup">
-          <span className="signup">
-            Don't have an account?
-            <label htmlFor="check">Signup</label>
-          </span>
-        </div> */}
-      </div>
-    
-    
-      <div className="registration form">
-      <header>Register</header>
-        <form onSubmit={handleRegister}>
-          <div className="two-column">
+        <input type="checkbox" id="check" />
+        <div className="login form">
+          <header>Login</header>
+          <form onSubmit={handleLogin}>
             <input
-              name="firstName"
-              placeholder="First Name"
-              onChange={handleChange}
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              value={email}
               required
             />
             <input
-              name="lastName"
-              placeholder="Last Name"
-              onChange={handleChange}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              value={password}
               required
             />
-          </div>
-          <input name="email" placeholder="Email" type="email" onChange={handleChange} required />
-
-         <div className="two-column">
-         <select required name="userType" onSubmit={handleChange} onChange={handleChange}>
-            <option value="">--Select user type--</option>
-            <option value="Admin">Admin</option>
-            <option value="Manager">Manager</option>
-            <option value="Staff">Staff</option>
-          </select>
-         
-          <select name="gender" onChange={handleChange}>
-            <option value="">--Select Gender--</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">other</option>
-          </select>
-         </div>
-
-
-          <input
-            name="office"
-            placeholder="Office"
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="officeAddress"
-            placeholder="Office Address"
-            onChange={handleChange}
-            required
-          />
-
-
-          <input
-            name="password"
-            placeholder="Password"
-            type="password"
-            onChange={handleChange}
-            required
-          />
-          <input type="submit" className="button" value="Register"/>
-        </form>
-        <div className="signup">
-          <span className="signup">
-            Already have an account?
-            <label htmlFor="check">Login</label>
-          </span>
+            <input type="submit" className="button" value="Login" />
+          </form>
+          {error && <p className="error-message">{error}</p>}
         </div>
       </div>
     </div>
-    </div>
   );
-}
+};

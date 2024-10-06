@@ -23,33 +23,38 @@ function App() {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/users/current-user', { withCredentials: true });
+      const response = await axios.get('http://localhost:5000/api/auth/current-user', { withCredentials: true });
       if (response.data.success) {
         setUser(response.data.user);
-        console.log("Successfully fetched data");
       } else {
         setUser(null);
       }
     } catch (error) {
-      console.error('Error fetching user:', error);
-      setUser(null);
+      if (error.response && error.response.status === 401) {
+        setUser(null); // Handle 401 without logging
+      } else {
+        console.error('Error fetching user:', error); // Log other unexpected errors
+      }
     } finally {
-      setLoading(false); // Set loading to false after fetching
+      setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     const localUser = localStorage.getItem('user');
+    
     if (localUser) {
       setUser(JSON.parse(localUser));
-      setLoading(false); // Set loading to false if user is in local storage
+      setLoading(false);
     } else {
-      fetchCurrentUser();
+      localStorage.setItem('user', null); // Set local storage to null
+      fetchCurrentUser(); // Fetch the current user
     }
   }, []);
+  
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading indicator or spinner
+    return <div>Loading...</div>; // Show a loading indicator
   }
 
   // If no user is logged in, redirect to login page
@@ -81,7 +86,7 @@ function App() {
         <div className="main-container">
           <AppLayout>
             <Routes>
-              <Route path="/" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
+              <Route path="/dashboard" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/dashboard" element={user.user_type === 'Admin' ? <AdminDashboard /> : <StaffDashboard />} />
